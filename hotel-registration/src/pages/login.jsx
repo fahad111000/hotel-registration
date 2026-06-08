@@ -1,6 +1,35 @@
 import { Box, Input, Text, Heading, VStack, Button, Field, Flex, Stack } from "@chakra-ui/react"
+import { useState } from "react"
 import { FaUser, FaLock, FaHotel } from 'react-icons/fa'
 export default function Login() {
+
+
+    const correctUser = 'fahad'
+    const correctPassword = '9988kk'
+
+    const [user, setUser] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
+    const loginHandel = () => {
+
+        if (correctUser === user && correctPassword === password) {
+            setPassword('')
+            setUser('')
+        }
+        else {
+            setError("Login Failed!");
+            setTimeout(() => {
+                setError('')
+            }, 3000)
+            setPassword('')
+            setUser('')
+        }
+
+    }
+
+
+
     return (
         <Box
             minH={'100vh'}
@@ -33,13 +62,17 @@ export default function Login() {
                     {/* Text */}
                     <Field.Root>
                         <Field.Label>user name</Field.Label>
-                        <Input type="text" placeholder="user name" />
+                        <Input type="text" placeholder="user name"
+                            value={user}
+                            onChange={(e) => setUser(e.target.value)} />
                     </Field.Root>
 
                     {/* Password */}
                     <Field.Root>
                         <Field.Label>Password</Field.Label>
-                        <Input type="password" placeholder="password" />
+                        <Input type="password" placeholder="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)} />
                     </Field.Root>
 
                     {/* Button */}
@@ -47,10 +80,19 @@ export default function Login() {
                         size="lg"
                         colorPalette="purple"
                         rounded="xl"
+                        onClick={loginHandel}
                     >
                         Sign In
                     </Button>
 
+                    {/* {error && <Text opacity={error ? 1 : 0} transition="opacity 0.5s ease" color="red.500">{error}</Text>} */}
+                    <Text
+                        color="red.500"
+                        opacity={error ? 0 : 1}
+                        transition="opacity 4s ease"
+                    >
+                        {error}
+                    </Text>
                     <Text
                         fontSize="sm"
                         color="blue.500"
