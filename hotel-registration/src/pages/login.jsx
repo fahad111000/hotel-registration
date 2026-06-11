@@ -1,11 +1,14 @@
 import { Box, Input, Text, Heading, VStack, Button, Field, Flex, Stack } from "@chakra-ui/react"
 import { useState } from "react"
+import { useNavigate } from 'react-router-dom'
 import { FaUser, FaLock, FaHotel } from 'react-icons/fa'
-export default function Login() {
 
+export default function Login() {
 
     const correctUser = 'fahad'
     const correctPassword = '9988kk'
+
+    const navigate = useNavigate()
 
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
@@ -14,6 +17,7 @@ export default function Login() {
     const loginHandel = () => {
 
         if (correctUser === user && correctPassword === password) {
+            navigate('/dashboard')
             setPassword('')
             setUser('')
         }
