@@ -5,16 +5,18 @@ import RegistrationForm from "./pages/registration"
 import GuestList from "./pages/guestlist"
 import { Routes, Route } from 'react-router-dom'
 
+
 export default function App() {
   return (
     <Box >
 
-      {/* <Routes>
+      <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        </Routes> */}
-      {/* <RegistrationForm /> */}
-      <GuestList />
+
+        <Route path="/guestlist" element={<GuestList />} />
+        <Route path="/registration" element={<RegistrationForm />} />
+      </Routes>
     </Box>
 
   )

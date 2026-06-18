@@ -8,12 +8,12 @@ export default function RegistrationForm() {
 
 
         <Box
-            textAlign={'center'} p={'14px'} border={'1px solid '}
-            bg="white" borderColor="#E8E0D5" maxW={'900px'} mx={'auto'} mt={'20px'}
-            rounded={'xl'} shadow={'md'}
+            textAlign={'center'}
+            bg="white" borderColor="#E8E0D5" maxW={'900px'} mx={'auto'}
+            rounded={'xl'}
         >
             {/* Heading */}
-            <Heading fontSize={'30px'} p={'20px'} color="#2C3E50" fontFamily="'Playfair Display', serif"> Guest Registration From</Heading>
+            <Heading fontSize={'30px'} color="#2C3E50" fontFamily="'Playfair Display', serif"> Guest Registration From</Heading>
 
             {/* GRID */}
             <SimpleGrid color="gray.600" fontWeight="500" py={'30px'} columns={{ base: 1, md: 2, lg: 3 }} gap={5}>
@@ -41,7 +41,7 @@ export default function RegistrationForm() {
 
                 {/* Cnic */}
                 <Field.Root>
-                    <Field.Label>CNIC</Field.Label>
+                    <Field.Label>CNIC/Passport</Field.Label>
                     <Input placeholder="CNIC" />
                 </Field.Root>
 
@@ -69,7 +69,7 @@ export default function RegistrationForm() {
 
                 {/* Car No */}
                 <Field.Root>
-                    <Field.Label>Car No</Field.Label>
+                    <Field.Label>Vehicle No</Field.Label>
                     <Input placeholder="Car No" />
                 </Field.Root>
 

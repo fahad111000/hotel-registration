@@ -1,7 +1,9 @@
 import { Box, Input, Text, Heading, VStack, Button, Field, Flex, Stack } from "@chakra-ui/react"
 import { useState } from "react"
+// import GuestList from "./guestlist"
 import { useNavigate } from 'react-router-dom'
 import { FaUser, FaLock, FaHotel } from 'react-icons/fa'
+import Dashboard from "./dahboard"
 
 export default function Login() {
 
