@@ -4,7 +4,7 @@ import RegistrationForm from "./registration";
 import { useState } from "react"
 import { IoClose } from "react-icons/io5"
 
-export default function GuestList() {
+export default function GuestList({ addGuest, guests }) {
 
     const [open, setOpen] = useState(false);
 
@@ -14,7 +14,7 @@ export default function GuestList() {
     }
 
     return (
-        <Box p={'10px'} maxW={'1100px'} mx={'auto'} my={'40px'} border={'3px solid '}
+        <Box p={'10px'} maxW={'1200px'} mx={'auto'} my={'40px'} border={'3px solid '}
             borderColor={'#E8E0D5'} rounded={'xl'} shadow={'md'}>
 
             <Flex p={'10px'} align={'center'} justifyContent={'space-between'}>
@@ -43,7 +43,7 @@ export default function GuestList() {
 
                         <Dialog.Body pt={'20px'}>
 
-                            <RegistrationForm />
+                            <RegistrationForm addGuest={addGuest} onClose={() => setOpen(false)} />
 
                         </Dialog.Body>
 
@@ -65,32 +65,41 @@ export default function GuestList() {
                         <Table.ColumnHeader>CNIC/Passport</Table.ColumnHeader>
                         <Table.ColumnHeader>District</Table.ColumnHeader>
                         <Table.ColumnHeader>Contact</Table.ColumnHeader>
+                        <Table.ColumnHeader>Car no</Table.ColumnHeader>
+                        <Table.ColumnHeader>Adults</Table.ColumnHeader>
+                        <Table.ColumnHeader>Children</Table.ColumnHeader>
                         <Table.ColumnHeader>Checked In</Table.ColumnHeader>
                         <Table.ColumnHeader>Checked Out</Table.ColumnHeader>
                     </Table.Row>
                 </Table.Header>
 
                 <Table.Body py={'100px'}>
+                    {guests.map((guest, index) => (
 
-                    <Table.Row _hover={{ bg: 'purple.50' }}>
-                        <Table.Cell>101</Table.Cell>
-                        <Table.Cell>Fahad</Table.Cell>
-                        <Table.Cell>Noor ul wahab</Table.Cell>
-                        <Table.Cell>1730193246464</Table.Cell>
-                        <Table.Cell>Peshawar</Table.Cell>
-                        <Table.Cell>03021598431</Table.Cell>
-                        <Table.Cell>12/4/26 pm</Table.Cell>
-                        <Table.Cell>13/4/26 pm</Table.Cell>
-                    </Table.Row>
+                        <Table.Row _hover={{ bg: 'purple.50' }} key={index}>
+
+                            <Table.Cell>{guest.roomNo}</Table.Cell>
+                            <Table.Cell>{guest.name}</Table.Cell>
+                            <Table.Cell>{guest.fatherName}</Table.Cell>
+                            <Table.Cell>{guest.cnic}</Table.Cell>
+                            <Table.Cell>{guest.district}</Table.Cell>
+                            <Table.Cell>{guest.contact}</Table.Cell>
+                            <Table.Cell>{guest.carNo}</Table.Cell>
+                            <Table.Cell>{guest.adults}</Table.Cell>
+                            <Table.Cell>{guest.children}</Table.Cell>
+                            <Table.Cell>{guest.checkedIN}</Table.Cell>
+                            <Table.Cell>{guest.checkedOut}</Table.Cell>
+                        </Table.Row>
+                    ))}
 
 
                 </Table.Body>
             </Table.Root>
 
             <Flex justifyContent={'space-between'} align={'center'} mt={4}>
-                <Text className="no-print">Total: 1 guest</Text>
+                <Text className="no-print" fontWeight={'semibold'}>Total Guest {guests.length}</Text>
                 <Button className="no-print" onClick={() => window.print()}>Print</Button>
             </Flex>
-        </Box>
+        </Box >
     )
 }

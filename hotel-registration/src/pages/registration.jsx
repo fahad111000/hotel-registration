@@ -1,7 +1,27 @@
 import { SimpleGrid, Box, Field, Input, Button, Heading, NativeSelect } from "@chakra-ui/react"
+import { useState } from "react"
 import Select from 'react-select'
 
-export default function RegistrationForm() {
+export default function RegistrationForm({addGuest, onClose}) {
+
+    const [formData, setFormData] = useState({
+        roomNo: '',
+        name: '',
+        fatherName: '',
+        cnic: '',
+        adults: '',
+        children: '',
+        district: '',
+        contact: '',
+        carNo: '',
+        checkedIN: '',
+        checkedOut: ''
+    })
+
+    const handelFormSubmit = () => {
+        addGuest(formData);
+        onClose()
+    }
 
 
     return (
@@ -21,56 +41,69 @@ export default function RegistrationForm() {
                 {/* Room No */}
                 <Field.Root >
                     <Field.Label color="#5D6D7E">Room No</Field.Label>
-                    <Input placeholder="Room No" type="numberq" />
+                    <Input placeholder="Room No" type="number"
+                        value={formData.roomNo} onChange={(e) => setFormData({ ...formData, roomNo: e.target.value })} />
                 </Field.Root>
 
 
                 {/* Name */}
                 <Field.Root>
                     <Field.Label>Name</Field.Label>
-                    <Input placeholder="Name" />
+                    <Input placeholder="Name"
+                        value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    />
                 </Field.Root>
 
 
                 {/* Father Name */}
                 <Field.Root>
                     <Field.Label>Father Name</Field.Label>
-                    <Input placeholder="Father Name" />
+                    <Input placeholder="Father Name"
+                        value={formData.fatherName} onChange={(e) => setFormData({ ...formData, fatherName: e.target.value })}
+                    />
                 </Field.Root>
 
 
                 {/* Cnic */}
                 <Field.Root>
                     <Field.Label>CNIC/Passport</Field.Label>
-                    <Input placeholder="CNIC" />
+                    <Input placeholder="CNIC"
+                        value={formData.cnic} onChange={(e) => setFormData({ ...formData, cnic: e.target.value })}
+                    />
                 </Field.Root>
 
 
                 {/* Distt */}
                 <Field.Root>
                     <Field.Label>District</Field.Label>
-                    <Input placeholder="District" />
+                    <Input placeholder="District"
+                        value={formData.district} onChange={(e) => setFormData({ ...formData, district: e.target.value })} />
                 </Field.Root>
 
 
                 {/* Nationality */}
-                <Field.Root>
+                {/* <Field.Root>
                     <Field.Label>Nationality</Field.Label>
-                    <Input placeholder="Optional" />
-                </Field.Root>
+                    <Input placeholder="Optional"
+                        value={formData.nationality} onChange={(e) => setFormData({ ...formData, nationality: e.target.value })} />
+                </Field.Root> */}
 
 
                 {/* Contact */}
                 <Field.Root>
                     <Field.Label>Contact</Field.Label>
-                    <Input placeholder="Contact" />
+                    <Input placeholder="Contact"
+                        value={formData.contact} onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+                    />
                 </Field.Root>
 
 
                 {/* Car No */}
                 <Field.Root>
                     <Field.Label>Vehicle No</Field.Label>
-                    <Input placeholder="Car No" />
+                    <Input placeholder="Car No"
+                        value={formData.carNo} onChange={(e) => setFormData({ ...formData, carNo: e.target.value })}
+                    />
                 </Field.Root>
 
 
@@ -78,20 +111,27 @@ export default function RegistrationForm() {
                 {/* Adults */}
                 <Field.Root>
                     <Field.Label>Adults</Field.Label>
-                    <Input placeholder=" Adults" type="number" />
+                    <Input placeholder=" Adults" type="number"
+                        value={formData.adults} onChange={(e) => setFormData({ ...formData, adults: e.target.value })}
+
+                    />
                 </Field.Root>
 
                 {/* Children */}
                 <Field.Root>
                     <Field.Label>Children</Field.Label>
-                    <Input placeholder=" Children" type="number" />
+                    <Input placeholder=" Children" type="number"
+                        value={formData.children} onChange={(e) => setFormData({ ...formData, children: e.target.value })}
+                    />
                 </Field.Root>
 
 
                 {/* Check-In */}
                 <Field.Root>
                     <Field.Label>Check-In</Field.Label>
-                    <Input placeholder="Check-In" type="datetime-local" />
+                    <Input placeholder="Check-In" type="datetime-local"
+                        value={formData.checkedIN} onChange={(e) => setFormData({ ...formData, checkedIN: e.target.value })}
+                    />
                 </Field.Root>
 
 
@@ -99,12 +139,14 @@ export default function RegistrationForm() {
                 {/* Check-out */}
                 <Field.Root>
                     <Field.Label>Check-out</Field.Label>
-                    <Input placeholder="Check-out" type="datetime-local" />
+                    <Input placeholder="Check-out" type="datetime-local"
+                        value={formData.checkedOut} onChange={(e) => setFormData({ ...formData, checkedOut: e.target.value })}
+                    />
                 </Field.Root>
 
             </SimpleGrid>
+            <Button colorPalette={'blue'} onClick={handelFormSubmit}>Register Guest</Button>
 
-            <Button colorPalette={'blue'}>Register Guest</Button>
         </Box>
     )
 }
