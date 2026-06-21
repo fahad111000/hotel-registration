@@ -12,6 +12,33 @@ export default function GuestList() {
     // Context values extract here
     const { guests, addGuest } = useGuest()
 
+    // Search 
+    const [search, setSearch] = useState('')
+
+    const matchesSearch = (value) => value.toLowerCase().includes(search.trim().toLocaleLowerCase())
+
+    const filterdGuests = guests.filter((guest) => {
+        return matchesSearch(guest.name) ||
+            matchesSearch(guest.fatherName) ||
+            matchesSearch(guest.cnic) ||
+            matchesSearch(guest.district) ||
+            matchesSearch(guest.contact) ||
+            matchesSearch(guest.carNo);
+    })
+
+    const highlightText = (text) => {
+        if (!search.trim()) return text  // search empty hai toh normal text
+
+        const regex = new RegExp(`(${search.trim()})`, 'gi')
+        const parts = text.split(regex)
+
+        return parts.map((part, i) =>
+            part.toLowerCase() === search.trim().toLowerCase()
+                ? <span key={i} style={{ color: '#EDD012', fontWeight: 'bold' }}>{part}</span>
+                : part
+        )
+    }
+
 
     return (
         <Box p={'10px'} maxW={'1200px'} mx={'auto'} my={'40px'} border={'3px solid '}
@@ -26,7 +53,9 @@ export default function GuestList() {
                     <Text fontSize={'14px'} fontWeight={"semibold"}>3 guests checked in</Text>
                 </Box>
 
-                <Input placeholder="search name, cnice etc" w={'320px'}/>
+                <Input placeholder="search name, cnice etc"
+                    value={search}
+                    w={'320px'} onChange={(e) => setSearch(e.target.value)} />
 
                 <Button onClick={() => setOpen(true)}>New Guest</Button>
             </Flex>
@@ -77,17 +106,17 @@ export default function GuestList() {
                 </Table.Header>
 
                 <Table.Body py={'100px'}>
-                    {guests.map((guest, index) => (
+                    {filterdGuests.map((guest, index) => (
 
                         <Table.Row _hover={{ bg: 'purple.50' }} key={index}>
 
                             <Table.Cell>{guest.roomNo}</Table.Cell>
-                            <Table.Cell>{guest.name}</Table.Cell>
-                            <Table.Cell>{guest.fatherName}</Table.Cell>
-                            <Table.Cell>{guest.cnic}</Table.Cell>
-                            <Table.Cell>{guest.district}</Table.Cell>
-                            <Table.Cell>{guest.contact}</Table.Cell>
-                            <Table.Cell>{guest.carNo}</Table.Cell>
+                            <Table.Cell >{highlightText(guest.name)}</Table.Cell>
+                            <Table.Cell>{highlightText(guest.fatherName)}</Table.Cell>
+                            <Table.Cell>{highlightText(guest.cnic)}</Table.Cell>
+                            <Table.Cell>{highlightText(guest.district)}</Table.Cell>
+                            <Table.Cell>{highlightText(guest.contact)}</Table.Cell>
+                            <Table.Cell>{highlightText(guest.carNo)}</Table.Cell>
                             <Table.Cell>{guest.adults}</Table.Cell>
                             <Table.Cell>{guest.children}</Table.Cell>
                             <Table.Cell>{guest.checkedIN}</Table.Cell>
