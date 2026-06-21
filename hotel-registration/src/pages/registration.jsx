@@ -1,9 +1,11 @@
 import { SimpleGrid, Box, Field, Input, Button, Heading, NativeSelect } from "@chakra-ui/react"
 import { useState } from "react"
+import { useGuest } from "../context/guestContext"
 import Select from 'react-select'
 
-export default function RegistrationForm({addGuest, onClose}) {
+export default function RegistrationForm({ onClose }) {
 
+    const { addGuest } = useGuest();
     const [formData, setFormData] = useState({
         roomNo: '',
         name: '',
@@ -57,7 +59,7 @@ export default function RegistrationForm({addGuest, onClose}) {
 
                 {/* Father Name */}
                 <Field.Root>
-                    <Field.Label>Father Name</Field.Label>
+                    <Field.Label>Father/Husband Name</Field.Label>
                     <Input placeholder="Father Name"
                         value={formData.fatherName} onChange={(e) => setFormData({ ...formData, fatherName: e.target.value })}
                     />

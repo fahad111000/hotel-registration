@@ -1,17 +1,17 @@
 import { Box, Flex, Heading, VStack, Text, Button, Table, Input, Dialog } from "@chakra-ui/react"
-import { useNavigate } from 'react-router-dom'
 import RegistrationForm from "./registration";
 import { useState } from "react"
 import { IoClose } from "react-icons/io5"
+import { useGuest } from "../context/guestContext";
 
-export default function GuestList({ addGuest, guests }) {
+export default function GuestList() {
 
+    // useState for dilog box
     const [open, setOpen] = useState(false);
 
-    const navigate = useNavigate();
-    const newGuest = () => {
-        navigate('/registration')
-    }
+    // Context values extract here
+    const { guests, addGuest } = useGuest()
+
 
     return (
         <Box p={'10px'} maxW={'1200px'} mx={'auto'} my={'40px'} border={'3px solid '}
@@ -20,10 +20,13 @@ export default function GuestList({ addGuest, guests }) {
             <Flex p={'10px'} align={'center'} justifyContent={'space-between'}>
 
                 {/* Guest List  */}
-                <Box>
-                    <Heading color={'#2C3E50'}>Guest List</Heading>
+                <Box >
+                    <Heading color={'#2C3E50'} fontFamily="'Playfair Display', serif"
+                        fontWeight={'bolder'} fontSize={'25px'}>Guest List </Heading>
                     <Text fontSize={'14px'} fontWeight={"semibold"}>3 guests checked in</Text>
                 </Box>
+
+                <Input placeholder="search name, cnice etc" w={'320px'}/>
 
                 <Button onClick={() => setOpen(true)}>New Guest</Button>
             </Flex>
@@ -43,7 +46,7 @@ export default function GuestList({ addGuest, guests }) {
 
                         <Dialog.Body pt={'20px'}>
 
-                            <RegistrationForm addGuest={addGuest} onClose={() => setOpen(false)} />
+                            <RegistrationForm onClose={() => setOpen(false)} />
 
                         </Dialog.Body>
 
@@ -61,7 +64,7 @@ export default function GuestList({ addGuest, guests }) {
                     <Table.Row bg={'gray.100'}>
                         <Table.ColumnHeader>Room No</Table.ColumnHeader>
                         <Table.ColumnHeader>Name</Table.ColumnHeader>
-                        <Table.ColumnHeader>Father Name</Table.ColumnHeader>
+                        <Table.ColumnHeader>Father/Husband Name</Table.ColumnHeader>
                         <Table.ColumnHeader>CNIC/Passport</Table.ColumnHeader>
                         <Table.ColumnHeader>District</Table.ColumnHeader>
                         <Table.ColumnHeader>Contact</Table.ColumnHeader>
