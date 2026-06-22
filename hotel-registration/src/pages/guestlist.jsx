@@ -1,10 +1,17 @@
 import { Box, Flex, Heading, VStack, Text, Button, Table, Input, Dialog } from "@chakra-ui/react"
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import { FaCalendarAlt } from 'react-icons/fa'
+
 import RegistrationForm from "./registration";
 import { useState } from "react"
 import { IoClose } from "react-icons/io5"
 import { useGuest } from "../context/guestContext";
 
 export default function GuestList() {
+
+    const [startDate, setStartDate] = useState(null)
+    const [endDate, setEndDate] = useState(null)
 
     // useState for dilog box
     const [open, setOpen] = useState(false);
@@ -18,12 +25,24 @@ export default function GuestList() {
     const matchesSearch = (value) => value.toLowerCase().includes(search.trim().toLocaleLowerCase())
 
     const filterdGuests = guests.filter((guest) => {
-        return matchesSearch(guest.name) ||
+        const matchedSearch =
+            matchesSearch(guest.name) ||
             matchesSearch(guest.fatherName) ||
             matchesSearch(guest.cnic) ||
             matchesSearch(guest.district) ||
             matchesSearch(guest.contact) ||
             matchesSearch(guest.carNo);
+
+        let matchdate = true
+        if (startDate && endDate) {
+            const guestDate = new Date(guest.checkedIN);
+            const endOfDay = new Date(endDate)
+            endOfDay.setHours(23, 59, 59, 999)  // ← din ka aakhri second
+            matchdate = guestDate >= startDate && guestDate <= endOfDay;
+
+        }
+
+        return matchedSearch && matchdate
     })
 
     const highlightText = (text) => {
@@ -56,6 +75,45 @@ export default function GuestList() {
                 <Input placeholder="search name, cnice etc"
                     value={search}
                     w={'320px'} onChange={(e) => setSearch(e.target.value)} />
+
+                <DatePicker
+                    selectsRange
+                    startDate={startDate}
+                    endDate={endDate}
+                    onChange={(dates) => {
+                        const [start, end] = dates
+                        setStartDate(start)
+                        setEndDate(end)
+
+                    }}
+                    value={startDate, endDate}
+                    withPortal={false}
+                    portalId="datepicker-portal"
+                    customInput={
+
+                        <Box position="relative" popperPlacement="bottom-start" >
+                            <Input placeholder="Select date range"
+                                value={
+                                    startDate && endDate ?
+                                        `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()} ` : ""}
+                                readOnly
+                            />
+                            <Box bg={'grey.300'} p={'5px'} position="absolute" right="10px" top="50%" transform="translateY(-50%)">
+                                <FaCalendarAlt color="#5D6D7E" />
+                            </Box>
+                        </Box>
+                    }
+                />
+
+                <Button
+                    onClick={() => {
+                        setSearch('')
+                        setStartDate(null)
+                        setEndDate(null)
+                    }}
+                >
+                    Clear
+                </Button>
 
                 <Button onClick={() => setOpen(true)}>New Guest</Button>
             </Flex>
