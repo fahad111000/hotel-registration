@@ -11,8 +11,11 @@ export default function GuestProvider({ children }) {
         setGuest([...guests, guest])
     }
 
+    // delete entry
+    const deleteEntry = (index) => { setGuest(prev => prev.filter((_, i) => index !== i)) }
+
     return (
-        <guestContext.Provider value={{ guests, addGuest }}>
+        <guestContext.Provider value={{ guests, addGuest, deleteEntry }}>
             {children}
         </guestContext.Provider>
     )

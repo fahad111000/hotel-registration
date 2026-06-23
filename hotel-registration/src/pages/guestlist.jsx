@@ -2,7 +2,7 @@ import { Box, Flex, Heading, VStack, Text, Button, Table, Input, Dialog } from "
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { FaCalendarAlt } from 'react-icons/fa'
-
+import { LuTrash2, LuPencil } from "react-icons/lu";
 import RegistrationForm from "./registration";
 import { useState } from "react"
 import { IoClose } from "react-icons/io5"
@@ -17,10 +17,12 @@ export default function GuestList() {
     const [open, setOpen] = useState(false);
 
     // Context values extract here
-    const { guests, addGuest } = useGuest()
+    const { guests, addGuest, deleteEntry } = useGuest()
 
     // Search 
     const [search, setSearch] = useState('')
+
+
 
     const matchesSearch = (value) => value.toLowerCase().includes(search.trim().toLocaleLowerCase())
 
@@ -46,7 +48,7 @@ export default function GuestList() {
     })
 
     const highlightText = (text) => {
-        if (!search.trim()) return text  // search empty hai toh normal text
+        if (!search.trim()) return text
 
         const regex = new RegExp(`(${search.trim()})`, 'gi')
         const parts = text.split(regex)
@@ -60,7 +62,7 @@ export default function GuestList() {
 
 
     return (
-        <Box p={'10px'} maxW={'1200px'} mx={'auto'} my={'40px'} border={'3px solid '}
+        <Box p={'10px'} maxW={'1300px'} mx={'auto'} my={'40px'} border={'3px solid '}
             borderColor={'#E8E0D5'} rounded={'xl'} shadow={'md'}>
 
             <Flex p={'10px'} align={'center'} justifyContent={'space-between'}>
@@ -160,6 +162,7 @@ export default function GuestList() {
                         <Table.ColumnHeader>Children</Table.ColumnHeader>
                         <Table.ColumnHeader>Checked In</Table.ColumnHeader>
                         <Table.ColumnHeader>Checked Out</Table.ColumnHeader>
+                        <Table.ColumnHeader>Actioins</Table.ColumnHeader>
                     </Table.Row>
                 </Table.Header>
 
@@ -179,6 +182,27 @@ export default function GuestList() {
                             <Table.Cell>{guest.children}</Table.Cell>
                             <Table.Cell>{guest.checkedIN}</Table.Cell>
                             <Table.Cell>{guest.checkedOut}</Table.Cell>
+                            <Table.Cell>
+                                <Flex gap={2}>
+                                    <Button
+                                        variant="outline"
+                                        color="blue.600"
+                                        size="xs">
+                                        <LuPencil size={16} />
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        color="red.600"
+                                        size="xs"
+                                        onClick={() => deleteEntry(index)}
+                                    >
+                                        <LuTrash2 size={16} />
+                                    </Button>
+                                </Flex>
+                            </Table.Cell>
+
+
+
                         </Table.Row>
                     ))}
 
