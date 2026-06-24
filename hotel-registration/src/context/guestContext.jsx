@@ -11,11 +11,17 @@ export default function GuestProvider({ children }) {
         setGuest([...guests, guest])
     }
 
+    const updateGuest = (index, updatedGuest) => {
+        setGuest(prev => prev.map((guest, i) =>
+            i === index ? updatedGuest : guest
+        ))
+    }
+
     // delete entry
     const deleteEntry = (index) => { setGuest(prev => prev.filter((_, i) => index !== i)) }
 
     return (
-        <guestContext.Provider value={{ guests, addGuest, deleteEntry }}>
+        <guestContext.Provider value={{ guests, addGuest, deleteEntry, updateGuest }}>
             {children}
         </guestContext.Provider>
     )

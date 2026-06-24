@@ -13,6 +13,9 @@ export default function GuestList() {
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
 
+    // Edit
+    const [isEdit, setIsEdit] = useState(false);
+    const [editIndex, setEditIndex] = useState(null);
     // useState for dilog box
     const [open, setOpen] = useState(false);
 
@@ -74,50 +77,59 @@ export default function GuestList() {
                     <Text fontSize={'14px'} fontWeight={"semibold"}>3 guests checked in</Text>
                 </Box>
 
-                <Input placeholder="search name, cnice etc"
-                    value={search}
-                    w={'320px'} onChange={(e) => setSearch(e.target.value)} />
+                <Flex gap={3}>
+                    <Input placeholder="search name, cnice etc"
+                        value={search}
+                        w={'320px'} onChange={(e) => setSearch(e.target.value)} />
 
-                <DatePicker
-                    selectsRange
-                    startDate={startDate}
-                    endDate={endDate}
-                    onChange={(dates) => {
-                        const [start, end] = dates
-                        setStartDate(start)
-                        setEndDate(end)
+                    <DatePicker
+                        selectsRange
+                        startDate={startDate}
+                        endDate={endDate}
+                        onChange={(dates) => {
+                            const [start, end] = dates
+                            setStartDate(start)
+                            setEndDate(end)
 
-                    }}
-                    value={startDate, endDate}
-                    withPortal={false}
-                    portalId="datepicker-portal"
-                    customInput={
+                        }}
+                        value={startDate, endDate}
+                        withPortal={false}
+                        portalId="datepicker-portal"
+                        customInput={
 
-                        <Box position="relative" popperPlacement="bottom-start" >
-                            <Input placeholder="Select date range"
-                                value={
-                                    startDate && endDate ?
-                                        `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()} ` : ""}
-                                readOnly
-                            />
-                            <Box bg={'grey.300'} p={'5px'} position="absolute" right="10px" top="50%" transform="translateY(-50%)">
-                                <FaCalendarAlt color="#5D6D7E" />
+                            <Box position="relative" w={'200px'} popperPlacement="bottom-start" >
+                                <Input placeholder="Select date range"
+                                    value={
+                                        startDate && endDate ?
+                                            `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()} ` : ""}
+                                    readOnly
+                                />
+                                <Box bg={'grey.300'} p={'5px'} position="absolute" right="10px" top="50%" transform="translateY(-50%)">
+                                    <FaCalendarAlt color="#5D6D7E" />
+                                </Box>
                             </Box>
-                        </Box>
-                    }
-                />
+                        }
+                    />
+
+                    <Button
+                        onClick={() => {
+                            setSearch('')
+                            setStartDate(null)
+                            setEndDate(null)
+                        }}
+                    >
+                        Clear
+                    </Button>
+
+                </Flex>
+
 
                 <Button
                     onClick={() => {
-                        setSearch('')
-                        setStartDate(null)
-                        setEndDate(null)
-                    }}
-                >
-                    Clear
-                </Button>
-
-                <Button onClick={() => setOpen(true)}>New Guest</Button>
+                        setOpen(true)
+                        setIsEdit(false)
+                        setEditIndex(null)
+                    }}>New Guest</Button>
             </Flex>
 
             <Dialog.Root open={open} onOpenChange={(e) => setOpen(e.open)} closeOnInteractOutside={false}
@@ -135,7 +147,7 @@ export default function GuestList() {
 
                         <Dialog.Body pt={'20px'}>
 
-                            <RegistrationForm onClose={() => setOpen(false)} />
+                            <RegistrationForm isEdit={isEdit} editIndex={editIndex} onClose={() => setOpen(false)} />
 
                         </Dialog.Body>
 
@@ -187,7 +199,13 @@ export default function GuestList() {
                                     <Button
                                         variant="outline"
                                         color="blue.600"
-                                        size="xs">
+                                        size="xs"
+                                        onClick={() => {
+                                            setIsEdit(true);
+                                            setEditIndex(guests.indexOf(guest));
+                                            setOpen(true)
+                                        }}
+                                    >
                                         <LuPencil size={16} />
                                     </Button>
                                     <Button

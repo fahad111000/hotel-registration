@@ -1,11 +1,12 @@
 import { SimpleGrid, Box, Field, Input, Button, Heading, NativeSelect } from "@chakra-ui/react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useGuest } from "../context/guestContext"
 import Select from 'react-select'
 
-export default function RegistrationForm({ onClose }) {
+export default function RegistrationForm({ onClose, isEdit, editIndex }) {
 
-    const { addGuest } = useGuest();
+
+    const { addGuest, guests, updateGuest } = useGuest();
     const [formData, setFormData] = useState({
         roomNo: '',
         name: '',
@@ -21,9 +22,21 @@ export default function RegistrationForm({ onClose }) {
     })
 
     const handelFormSubmit = () => {
-        addGuest(formData);
+        if (isEdit) {
+            updateGuest(editIndex, formData);
+        } else {
+            addGuest(formData)
+        }
         onClose()
     }
+
+
+    useEffect(() => {
+        if (isEdit && editIndex !== null) {
+            setFormData(guests[editIndex])
+        }
+    }, [isEdit, editIndex])
+
 
 
     return (
