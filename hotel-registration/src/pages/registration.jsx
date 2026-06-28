@@ -6,7 +6,7 @@ import Select from 'react-select'
 export default function RegistrationForm({ onClose, isEdit, editIndex }) {
 
 
-    const { addGuest, guests, updateGuest } = useGuest();
+    const { addGuest, guests, updateGuest, updateRecords } = useGuest();
     const [formData, setFormData] = useState({
         roomNo: '',
         name: '',
@@ -24,6 +24,7 @@ export default function RegistrationForm({ onClose, isEdit, editIndex }) {
     const handelFormSubmit = () => {
         if (isEdit) {
             updateGuest(editIndex, formData);
+            // updateRecords(editIndex, formData)
         } else {
             addGuest(formData)
         }

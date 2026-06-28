@@ -27,7 +27,7 @@ export default function GuestList() {
 
 
 
-    const matchesSearch = (value) => value.toLowerCase().includes(search.trim().toLocaleLowerCase())
+    const matchesSearch = (value) => value.toLowerCase().includes(search.trim().toLowerCase())
 
     const filterdGuests = guests.filter((guest) => {
         const matchedSearch =

@@ -25,6 +25,11 @@ export default function Dashboard() {
                     <Text fontWeight={'bold'} color={'#2C3E50'}>Guest List</Text>
                     <Text fontSize={'sm'} color={'gray.500'}>View all records</Text>
                 </Box>
+
+                <Box bg={'white'} p={6} rounded={'xl'} shadow={'sm'}
+                    cursor={'pointer'} onClick={() => navigate('/guestRecords')}>
+                    <Text fontWeight={'bold'} color={'#2C3E50'}>All Records</Text>
+                </Box>
             </SimpleGrid>
 
         </Box>
