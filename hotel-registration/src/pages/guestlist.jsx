@@ -10,9 +10,6 @@ import { useGuest } from "../context/guestContext";
 
 export default function GuestList() {
 
-    const [startDate, setStartDate] = useState(null)
-    const [endDate, setEndDate] = useState(null)
-
     // Edit
     const [isEdit, setIsEdit] = useState(false);
     const [editIndex, setEditIndex] = useState(null);
@@ -38,16 +35,8 @@ export default function GuestList() {
             matchesSearch(guest.contact) ||
             matchesSearch(guest.carNo);
 
-        let matchdate = true
-        if (startDate && endDate) {
-            const guestDate = new Date(guest.checkedIN);
-            const endOfDay = new Date(endDate)
-            endOfDay.setHours(23, 59, 59, 999)  // ← din ka aakhri second
-            matchdate = guestDate >= startDate && guestDate <= endOfDay;
 
-        }
-
-        return matchedSearch && matchdate
+        return matchedSearch
     })
 
     const highlightText = (text) => {
@@ -82,40 +71,11 @@ export default function GuestList() {
                         value={search}
                         w={'320px'} onChange={(e) => setSearch(e.target.value)} />
 
-                    <DatePicker
-                        selectsRange
-                        startDate={startDate}
-                        endDate={endDate}
-                        onChange={(dates) => {
-                            const [start, end] = dates
-                            setStartDate(start)
-                            setEndDate(end)
-
-                        }}
-                        value={startDate, endDate}
-                        withPortal={false}
-                        portalId="datepicker-portal"
-                        customInput={
-
-                            <Box position="relative" w={'200px'} popperPlacement="bottom-start" >
-                                <Input placeholder="Select date range"
-                                    value={
-                                        startDate && endDate ?
-                                            `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()} ` : ""}
-                                    readOnly
-                                />
-                                <Box bg={'grey.300'} p={'5px'} position="absolute" right="10px" top="50%" transform="translateY(-50%)">
-                                    <FaCalendarAlt color="#5D6D7E" />
-                                </Box>
-                            </Box>
-                        }
-                    />
 
                     <Button
                         onClick={() => {
                             setSearch('')
-                            setStartDate(null)
-                            setEndDate(null)
+
                         }}
                     >
                         Clear

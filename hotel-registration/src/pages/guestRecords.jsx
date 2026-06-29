@@ -7,13 +7,19 @@ import { useState } from "react"
 
 
 export default function GuestRecords() {
+    // Records
     const { records } = useGuest();
+
+    // Search
     const [search, setSearch] = useState('');
 
+    // Dates
+    const [startDate, setStartDate] = useState(null)
+    const [endDate, setEndDate] = useState(null)
+
+
+    // Search matches adn text hilights
     const matchesSearch = (value) => value.toLowerCase().includes(search.trim().toLowerCase())
-    // const matchesSearch = (value) => value.toLowerCase().includes(search.trim().toLowerCase())
-
-
     const highlightText = (text) => {
         if (!search.trim()) return text;
 
@@ -28,8 +34,6 @@ export default function GuestRecords() {
 
     }
 
-
-
     const filterGuest = records.filter((record) => {
         const matchedSearch =
             matchesSearch(record.name) ||
@@ -39,7 +43,16 @@ export default function GuestRecords() {
             matchesSearch(record.contact) ||
             matchesSearch(record.carNo);
 
-        return matchedSearch
+        let matchDate = true
+        if (startDate && endDate) {
+            const guestDate = new Date(record.checkedIN);
+            const endOfDay = new Date(endDate);
+
+            endOfDay.setHours(23, 59, 59, 999)
+            matchDate = guestDate >= startDate && guestDate <= endOfDay
+        }
+
+        return matchedSearch && matchDate
     })
 
 
@@ -61,12 +74,28 @@ export default function GuestRecords() {
 
                     <DatePicker
                         selectsRange
+                        startDate={startDate}
+                        endDate={endDate}
+
+                        onChange={(dates) => {
+
+                            const [start, end] = dates
+                            setStartDate(start)
+                            setEndDate(end)
+                        }
+                        }
+
+                        value={startDate, endDate}
                         withPortal={false}
                         portalId="datepicker-portal"
                         customInput={
 
                             <Box position="relative" w={'200px'} popperPlacement="bottom-start" >
                                 <Input placeholder="Select date range"
+                                    value={
+                                        startDate && endDate ?
+                                            `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()} ` : ""}
+                                    readOnly
                                 />
                                 <Box bg={'grey.300'} p={'5px'} position="absolute" right="10px" top="50%" transform="translateY(-50%)">
                                     <FaCalendarAlt color="#5D6D7E" />
@@ -75,7 +104,11 @@ export default function GuestRecords() {
                         }
                     />
 
-                    <Button>
+                    <Button onClick={() => {
+                        setSearch('')
+                        setStartDate(null)
+                        setEndDate(null)
+                    }}>
                         Clear
                     </Button>
 
