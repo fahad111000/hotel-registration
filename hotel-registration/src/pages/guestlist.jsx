@@ -6,9 +6,14 @@ import { LuTrash2, LuPencil } from "react-icons/lu";
 import RegistrationForm from "./registration";
 import { useState } from "react"
 import { IoClose } from "react-icons/io5"
+import GuestRecords from "./guestRecords";
 import { useGuest } from "../context/guestContext";
+import { useNavigate } from "react-router-dom";
 
 export default function GuestList() {
+
+    // navigate
+    const navigate = useNavigate()
 
     // Edit
     const [isEdit, setIsEdit] = useState(false);
@@ -63,7 +68,6 @@ export default function GuestList() {
                 <Box >
                     <Heading color={'#2C3E50'} fontFamily="'Playfair Display', serif"
                         fontWeight={'bolder'} fontSize={'25px'}>Guest List </Heading>
-                    <Text fontSize={'14px'} fontWeight={"semibold"}>3 guests checked in</Text>
                 </Box>
 
                 <Flex gap={3}>
@@ -83,13 +87,18 @@ export default function GuestList() {
 
                 </Flex>
 
+                <Flex gap={5}>
+                    {/* View All Records */}
+                    <Button onClick={() => navigate('/guestRecords')}>View All Records</Button>
 
-                <Button
-                    onClick={() => {
+                    <Button onClick={() => {
                         setOpen(true)
                         setIsEdit(false)
                         setEditIndex(null)
                     }}>New Guest</Button>
+
+                </Flex>
+
             </Flex>
 
             <Dialog.Root open={open} onOpenChange={(e) => setOpen(e.open)} closeOnInteractOutside={false}

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { useGuest } from "../context/guestContext"
 import Select from 'react-select'
 
+
 export default function RegistrationForm({ onClose, isEdit, editIndex }) {
 
 
@@ -20,6 +21,13 @@ export default function RegistrationForm({ onClose, isEdit, editIndex }) {
         checkedIN: '',
         checkedOut: ''
     })
+
+    const formatCNIC = (value) => {
+        const number = value.replace(/\D/g, '');
+        if (number.length <= 5) return number
+        if (number.length <= 12) return `${number.slice(0, 5)} ${number.slice(5)}`
+        return `${number.slice(0, 5)}-${number.slice(5, 12)}-${number.slice(12, 13)}`
+    }
 
     const handelFormSubmit = () => {
         if (isEdit) {
@@ -83,8 +91,8 @@ export default function RegistrationForm({ onClose, isEdit, editIndex }) {
                 {/* Cnic */}
                 <Field.Root>
                     <Field.Label>CNIC/Passport</Field.Label>
-                    <Input placeholder="CNIC"
-                        value={formData.cnic} onChange={(e) => setFormData({ ...formData, cnic: e.target.value })}
+                    <Input placeholder="XXXXX-XXXXXXX-X" maxLength={15}
+                        value={formData.cnic} onChange={(e) => setFormData({ ...formData, cnic: formatCNIC(e.target.value) })}
                     />
                 </Field.Root>
 

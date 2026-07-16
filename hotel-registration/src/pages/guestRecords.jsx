@@ -7,6 +7,7 @@ import { useState } from "react"
 
 
 export default function GuestRecords() {
+
     // Records
     const { records } = useGuest();
 
