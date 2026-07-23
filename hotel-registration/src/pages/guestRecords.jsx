@@ -1,4 +1,5 @@
-import { Box, Flex, Heading, VStack, Text, Button, Table, Input, Dialog } from "@chakra-ui/react"
+import { Box, Flex, Heading, VStack, Text, Button, Table, Input, Dialog, IconButton, Pagination, ButtonGroup } from "@chakra-ui/react"
+import { LuChevronLeft, LuChevronsRight } from "react-icons/lu"
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { FaCalendarAlt } from 'react-icons/fa'
@@ -7,6 +8,10 @@ import { useState } from "react"
 
 
 export default function GuestRecords() {
+
+    const [currentPage, SetCurrentPage] = useState(1);
+    const itemPerPage = 10;
+
 
     // Records
     const { records } = useGuest();
@@ -20,8 +25,9 @@ export default function GuestRecords() {
 
 
     // Search matches adn text hilights
-    const matchesSearch = (value) => value.toLowerCase().includes(search.trim().toLowerCase())
+    const matchesSearch = (value) => (value || '').toLowerCase().includes(search.trim().toLowerCase())
     const highlightText = (text) => {
+        if (!text) return ''
         if (!search.trim()) return text;
 
         const regex = RegExp(`(${search.trim()})`, 'gi');
@@ -55,6 +61,11 @@ export default function GuestRecords() {
 
         return matchedSearch && matchDate
     })
+
+
+    const paginatedRecords = filterGuest.slice(
+        (currentPage - 1) * itemPerPage, currentPage * itemPerPage
+    )
 
 
     return (
@@ -139,7 +150,7 @@ export default function GuestRecords() {
                 </Table.Header>
 
                 <Table.Body py={'100px'}>
-                    {filterGuest.map((guestRecord, index) => (
+                    {paginatedRecords.map((guestRecord, index) => (
 
                         <Table.Row _hover={{ bg: 'purple.50' }} key={index}>
 
@@ -167,6 +178,30 @@ export default function GuestRecords() {
                 <Text className="no-print" fontWeight={'semibold'}>Total Guest {records.length}</Text>
                 <Button className="no-print" onClick={() => window.print()}>Print</Button>
             </Flex>
+
+            <Pagination.Root count={filterGuest.length} pageSize={itemPerPage} page={currentPage}
+                onPageChange={(e) => SetCurrentPage(e.page)} >
+                <ButtonGroup>
+                    <Pagination.PrevTrigger asChild>
+                        <IconButton><LuChevronLeft /></IconButton>
+                    </Pagination.PrevTrigger>
+
+                    <Pagination.Items
+
+                        render={(page) => (
+                            <IconButton variant={{ base: 'outline', _selected: 'solid' }}>
+                                {page.value}
+                            </IconButton>
+                        )}
+                    />
+
+                    <Pagination.NextTrigger asChild>
+                        <IconButton><LuChevronsRight /></IconButton>
+                    </Pagination.NextTrigger>
+
+                </ButtonGroup>
+            </Pagination.Root>
+
         </Box >
     )
 }

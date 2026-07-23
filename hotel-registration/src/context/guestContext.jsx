@@ -13,7 +13,7 @@ export default function GuestProvider({ children }) {
 
             const UpdatedGuests = savedGuests.filter((guest) => {
                 const diff = Date.now() - guest.createdAt;
-                return diff < 4 * 60 * 1000;
+                return diff < 24 * 60 * 60 * 1000;
 
             });
 

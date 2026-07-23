@@ -29,7 +29,7 @@ export default function GuestList() {
 
 
 
-    const matchesSearch = (value) => value.toLowerCase().includes(search.trim().toLowerCase())
+    const matchesSearch = (value) => (value || "").toLowerCase().includes(search.trim().toLowerCase())
 
     const filterdGuests = guests.filter((guest) => {
         const matchedSearch =
@@ -45,6 +45,7 @@ export default function GuestList() {
     })
 
     const highlightText = (text) => {
+        if (!text) return ''  
         if (!search.trim()) return text
 
         const regex = new RegExp(`(${search.trim()})`, 'gi')

@@ -1,11 +1,17 @@
 import { SimpleGrid, Box, Field, Input, Button, Heading, NativeSelect } from "@chakra-ui/react"
 import { useState, useEffect } from "react"
 import { useGuest } from "../context/guestContext"
-import Select from 'react-select'
-
+import { Combobox, useListCollection, useFilter } from "@chakra-ui/react"
+import { districts } from "../data/district";
 
 export default function RegistrationForm({ onClose, isEdit, editIndex }) {
-
+    // Component mein:
+    const { contains } = useFilter({ sensitivity: "base" })
+    const { collection, filter } = useListCollection({
+        initialItems: districts.map(d => ({ label: d, value: d })),
+        filter: contains,
+        limit: 15
+    })
 
     const { addGuest, guests, updateGuest, updateRecords } = useGuest();
     const [formData, setFormData] = useState({
@@ -46,7 +52,10 @@ export default function RegistrationForm({ onClose, isEdit, editIndex }) {
         }
     }, [isEdit, editIndex])
 
-
+    const districtOptions = districts.map((d) => ({
+        value: d,
+        label: d
+    }))
 
     return (
 
@@ -98,19 +107,44 @@ export default function RegistrationForm({ onClose, isEdit, editIndex }) {
 
 
                 {/* Distt */}
-                <Field.Root>
-                    <Field.Label>District</Field.Label>
-                    <Input placeholder="District"
-                        value={formData.district} onChange={(e) => setFormData({ ...formData, district: e.target.value })} />
-                </Field.Root>
 
+                <Field.Root>
+
+                    <Field.Label>Select District</Field.Label>
+
+                    <Combobox.Root
+                        collection={collection}
+                        positioning={{ strategy: "fixed" }}
+                        onInputValueChange={(e) => filter(e.inputValue)}
+                        onValueChange={(e) => setFormData({ ...formData, district: e.value[0] })}
+                    >
+                        <Combobox.Control>
+                            <Combobox.Input placeholder="Select District" />
+                            <Combobox.IndicatorGroup>
+                                <Combobox.ClearTrigger />
+                                <Combobox.Trigger />
+                            </Combobox.IndicatorGroup>
+                        </Combobox.Control>
+                        <Combobox.Positioner>
+                            <Combobox.Content>
+                                <Combobox.Empty>No district found</Combobox.Empty>
+                                {collection.items.map((item) => (
+                                    <Combobox.Item key={item.value} item={item}>
+                                        <Combobox.ItemText>{item.label}</Combobox.ItemText>
+                                    </Combobox.Item>
+                                ))}
+                            </Combobox.Content>
+                        </Combobox.Positioner>
+                    </Combobox.Root>
+
+                </Field.Root>
 
                 {/* Nationality */}
                 {/* <Field.Root>
                     <Field.Label>Nationality</Field.Label>
                     <Input placeholder="Optional"
-                        value={formData.nationality} onChange={(e) => setFormData({ ...formData, nationality: e.target.value })} />
-                </Field.Root> */}
+                    value={formData.nationality} onChange={(e) => setFormData({ ...formData, nationality: e.target.value })} />
+                    </Field.Root> */}
 
 
                 {/* Contact */}
