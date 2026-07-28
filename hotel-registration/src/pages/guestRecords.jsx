@@ -10,7 +10,7 @@ import { useState } from "react"
 export default function GuestRecords() {
 
     const [currentPage, SetCurrentPage] = useState(1);
-    const itemPerPage = 10;
+    const itemPerPage = 3;
 
 
     // Records

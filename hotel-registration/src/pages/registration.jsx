@@ -13,7 +13,7 @@ export default function RegistrationForm({ onClose, isEdit, editIndex }) {
         limit: 15
     })
 
-    const { addGuest, guests, updateGuest, updateRecords } = useGuest();
+    const { addGuest, guests, updateGuest, updateRecords, records } = useGuest();
     const [formData, setFormData] = useState({
         roomNo: '',
         name: '',
@@ -31,8 +31,32 @@ export default function RegistrationForm({ onClose, isEdit, editIndex }) {
     const formatCNIC = (value) => {
         const number = value.replace(/\D/g, '');
         if (number.length <= 5) return number
-        if (number.length <= 12) return `${number.slice(0, 5)} ${number.slice(5)}`
+        if (number.length <= 12) return `${number.slice(0, 5)}-${number.slice(5)}`
         return `${number.slice(0, 5)}-${number.slice(5, 12)}-${number.slice(12, 13)}`
+    }
+
+    const handelCNIC = (e) => {
+        const formattedCNIC = formatCNIC(e.target.value)
+        setFormData({ ...formData, cnic: formattedCNIC })
+
+        if (formattedCNIC.length === 15) {
+            const foundCNIC = records.find(r => r.cnic === formattedCNIC)
+            if (foundCNIC) {
+                setFormData({
+                    ...formData,
+                    cnic: formattedCNIC,
+                    name: foundCNIC.name,
+                    fatherName: foundCNIC.fatherName,
+                    district: foundCNIC.district,
+                    contact: foundCNIC.contact,
+                    carNo: foundCNIC.carNo,
+                    adults: foundCNIC.adults,
+                    children: foundCNIC.children,
+                    checkedIN: '',  
+                    checkedOut: ''
+                })
+            }
+        }
     }
 
     const handelFormSubmit = () => {
@@ -101,7 +125,7 @@ export default function RegistrationForm({ onClose, isEdit, editIndex }) {
                 <Field.Root>
                     <Field.Label>CNIC/Passport</Field.Label>
                     <Input placeholder="XXXXX-XXXXXXX-X" maxLength={15}
-                        value={formData.cnic} onChange={(e) => setFormData({ ...formData, cnic: formatCNIC(e.target.value) })}
+                        value={formData.cnic} onChange={handelCNIC}
                     />
                 </Field.Root>
 
