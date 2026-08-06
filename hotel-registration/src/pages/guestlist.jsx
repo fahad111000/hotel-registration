@@ -45,7 +45,7 @@ export default function GuestList() {
     })
 
     const highlightText = (text) => {
-        if (!text) return ''  
+        if (!text) return ''
         if (!search.trim()) return text
 
         const regex = new RegExp(`(${search.trim()})`, 'gi')
@@ -135,8 +135,8 @@ export default function GuestList() {
                     <Table.Row bg={'gray.100'}>
                         <Table.ColumnHeader>Room No</Table.ColumnHeader>
                         <Table.ColumnHeader>Name</Table.ColumnHeader>
-                        <Table.ColumnHeader>Father/Husband Name</Table.ColumnHeader>
-                        <Table.ColumnHeader>CNIC/Passport</Table.ColumnHeader>
+                        <Table.ColumnHeader>Father/Husband </Table.ColumnHeader>
+                        <Table.ColumnHeader>CNIC</Table.ColumnHeader>
                         <Table.ColumnHeader>District</Table.ColumnHeader>
                         <Table.ColumnHeader>Contact</Table.ColumnHeader>
                         <Table.ColumnHeader>Car no</Table.ColumnHeader>
@@ -144,14 +144,14 @@ export default function GuestList() {
                         <Table.ColumnHeader>Children</Table.ColumnHeader>
                         <Table.ColumnHeader>Checked In</Table.ColumnHeader>
                         <Table.ColumnHeader>Checked Out</Table.ColumnHeader>
-                        <Table.ColumnHeader>Actioins</Table.ColumnHeader>
+                        <Table.ColumnHeader>Actions</Table.ColumnHeader>
                     </Table.Row>
                 </Table.Header>
 
                 <Table.Body py={'100px'}>
                     {filterdGuests.map((guest, index) => (
 
-                        <Table.Row _hover={{ bg: 'purple.50' }} key={index}>
+                        <Table.Row  key={index}>
 
                             <Table.Cell>{guest.roomNo}</Table.Cell>
                             <Table.Cell >{highlightText(guest.name)}</Table.Cell>

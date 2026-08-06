@@ -23,6 +23,7 @@ export default function RegistrationForm({ onClose, isEdit, editIndex }) {
         children: '',
         district: '',
         contact: '',
+        roomPrice: '',
         carNo: '',
         checkedIN: '',
         checkedOut: ''
@@ -52,12 +53,14 @@ export default function RegistrationForm({ onClose, isEdit, editIndex }) {
                     carNo: foundCNIC.carNo,
                     adults: foundCNIC.adults,
                     children: foundCNIC.children,
-                    checkedIN: '',  
+
+                    checkedIN: '',
                     checkedOut: ''
                 })
             }
         }
     }
+    console.log("Form data : ", formData)
 
     const handelFormSubmit = () => {
         if (isEdit) {
@@ -208,6 +211,17 @@ export default function RegistrationForm({ onClose, isEdit, editIndex }) {
                 </Field.Root>
 
 
+                {/* Price */}
+                <Field.Root>
+                    <Field.Label>Price</Field.Label>
+                    <Input placeholder="price" type="number"
+                        value={formData.roomPrice}
+                        onChange={(e) => setFormData({ ...formData, roomPrice: e.target.value })}
+
+                    />
+                </Field.Root>
+
+
                 {/* Check-In */}
                 <Field.Root>
                     <Field.Label>Check-In</Field.Label>
@@ -215,7 +229,6 @@ export default function RegistrationForm({ onClose, isEdit, editIndex }) {
                         value={formData.checkedIN} onChange={(e) => setFormData({ ...formData, checkedIN: e.target.value })}
                     />
                 </Field.Root>
-
 
 
                 {/* Check-out */}
@@ -226,9 +239,13 @@ export default function RegistrationForm({ onClose, isEdit, editIndex }) {
                     />
                 </Field.Root>
 
+
+
+
             </SimpleGrid>
             <Button colorPalette={'blue'} onClick={handelFormSubmit}>Register Guest</Button>
 
         </Box>
     )
+
 }

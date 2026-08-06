@@ -98,7 +98,7 @@ export default function GuestRecords() {
                         fontWeight={'bolder'} fontSize={'25px'}> Guest Records </Heading>
                 </Box>
 
-                <HStack >
+                <HStack mx={2}>
                     <Input placeholder="search name, cnice etc"
                         w={'320px'} onChange={(e) => setSearch(e.target.value)} />
 
