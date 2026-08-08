@@ -39,6 +39,10 @@ export default function GuestRecords() {
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
 
+    const guestHistory = records
+        .filter(r => r.cnic === selectedHistory?.cnic)
+        .sort((a, b) => new Date(b.checkedIN) - new Date(a.checkedIN))
+
 
     // Search matches adn text hilights
     const matchesSearch = (value) => (value || '').toLowerCase().includes(search.trim().toLowerCase())
@@ -186,14 +190,16 @@ export default function GuestRecords() {
                             <Table.Cell>{guestRecord.checkedIN}</Table.Cell>
                             <Table.Cell>{guestRecord.checkedOut}</Table.Cell>
                             <Table.Cell>
-                                <Button variant={'subtle'} color={'blue.600'} size={'xs'}>
+                                <Button p={2} variant={'subtle'} color={'blue.600'}
+                                    size={'xs'} cursor={'pointer'}
 
-                                    <LuEye
+                                    onClick={() => {
+                                        setSelectedHistory(guestRecord);
+                                        setHistoryOpen(true)
+                                    }}
+                                >
 
-                                        onClick={() => {
-                                            setHistoryOpen(true)
-                                        }}
-                                    />
+                                    <LuEye />
                                 </Button>
                             </Table.Cell>
                         </Table.Row>
@@ -230,99 +236,78 @@ export default function GuestRecords() {
                                 </Flex>
 
                                 <HStack mt={5}>
-                                    <Text fontWeight={'bold'}>Fahad khan</Text>
+                                    <Text fontWeight={'bold'}>{selectedHistory.name}</Text>
                                     <Badge colorPalette={'blue'}
                                         px={2} py={1} >
-                                        5 Visits
+                                        {guestHistory.length}
                                     </Badge>
                                 </HStack>
 
                                 <HStack color={'GrayText'} mt={3} pb={3}>
-                                    <Text>17301-3908766-7</Text>
-                                    <Text mx={5}>03029317283</Text>
+                                    <Text>{selectedHistory.cnic}</Text>
+                                    <Text mx={5}>{selectedHistory.contact}</Text>
                                 </HStack>
 
                                 <hr></hr>
 
                             </Flex>
 
-                            {/* Table */}
-                            {/* <Table.Root mt={4}>
-                                <TableHeader>
-                                    <Table.Row>
-                                        <TableColumnHeader>SNo</TableColumnHeader>
-                                        <TableColumnHeader>Room NO</TableColumnHeader>
-                                        <TableColumnHeader>Check-IN</TableColumnHeader>
-                                        <TableColumnHeader>Check-Out</TableColumnHeader>
-                                        <TableColumnHeader>Adults</TableColumnHeader>
-                                        <TableColumnHeader>Children</TableColumnHeader>
-                                        <TableColumnHeader>Price</TableColumnHeader>
-                                    </Table.Row>
-                                </TableHeader>
-
-                                <Table.Body>
-
-                                </Table.Body>
-                            </Table.Root>
-
-                             */}
-
                             <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4}>
 
+                                {guestHistory.map((visit, index) => (
 
 
 
 
-                                <Card.Root my={6} borderRadius="xl" boxShadow="sm" border="1px solid" borderColor="gray.200">
-                                    <Card.Body p={4}>
+                                    <Card.Root my={6} key={index} borderRadius="xl" boxShadow="sm" border="1px solid" borderColor="gray.200">
+                                        <Card.Body p={4}>
 
-                                        <Flex justify="space-between" align="center" mb={3}>
-                                            <HStack>
-                                                <LuBed color="#7C3AED" size={18} />
-                                                <Text fontWeight="bold">Visit #2</Text>
-                                            </HStack>
-
-                                            <Badge colorPalette="green">
-                                                Latest
-                                            </Badge>
-                                        </Flex>
-                                        <VStack align="start" gap={2}>
-
-
-                                            <Flex mt={5} w={'full'} justifyContent={'space-between'} >
-
+                                            <Flex justify="space-between" align="center" mb={3}>
                                                 <HStack>
-                                                    <Text fontWeight="medium">Room:</Text>
-
-                                                    <Text>205</Text>
-
+                                                    <LuBed color="#7C3AED" size={18} />
+                                                    <Text fontWeight="bold">Visit {guestHistory.length - index}</Text>
                                                 </HStack>
 
-                                                <Badge colorPalette="green" borderRadius="sm">
-                                                    5,000
-                                                </Badge>
+                                                {index === 0 && <Badge colorPalette="green">Latest</Badge>}
                                             </Flex>
+                                            <VStack align="start" gap={2}>
 
-                                            <HStack>
 
-                                                <LuCalendarArrowDown color="green" />
-                                                <Text>Jun 5, 2026</Text>
-                                            </HStack>
+                                                <Flex mt={5} w={'full'} justifyContent={'space-between'} >
 
-                                            <HStack >
-                                                <LuCalendarArrowUp color="red" />
-                                                <Text>Jun 6, 2026</Text>
-                                            </HStack>
+                                                    <HStack>
+                                                        <Text fontWeight="medium">Room:</Text>
 
-                                            <HStack justify="space-between" w="100%">
-                                                <LuUsers />
-                                                <MdChildCare size={18} />
-                                            </HStack>
+                                                        <Text>{visit.roomNo}</Text>
 
-                                        </VStack>
+                                                    </HStack>
 
-                                    </Card.Body>
-                                </Card.Root>
+                                                    <Badge colorPalette="green" borderRadius="sm">
+                                                        {/* {vist.price} */}
+                                                    </Badge>
+                                                </Flex>
+
+                                                <HStack>
+
+                                                    <LuCalendarArrowDown color="green" />
+                                                    <Text>{visit.checkedIN}</Text>
+                                                </HStack>
+
+                                                <HStack >
+                                                    <LuCalendarArrowUp color="red" />
+                                                    <Text>{visit.checkedOut}</Text>
+                                                </HStack>
+
+                                                <HStack justify="space-between" w="100%">
+                                                    <LuUsers /><Text>{visit.adults}</Text>
+                                                    <MdChildCare size={18} /><Text>{visit.children}</Text>
+                                                </HStack>
+
+                                            </VStack>
+
+                                        </Card.Body>
+                                    </Card.Root>
+                                ))}
 
                             </SimpleGrid>
 
