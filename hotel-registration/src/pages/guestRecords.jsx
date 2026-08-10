@@ -39,6 +39,12 @@ export default function GuestRecords() {
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
 
+    const uniqueRecords = records
+        .sort((a, b) => new Date(b.checkedIN) - new Date(a.checkedIN))  // latest pehle
+        .filter((record, index, self) =>
+            index === self.findIndex(r => r.cnic === record.cnic)  // unique CNIC
+        )
+
     const guestHistory = records
         .filter(r => r.cnic === selectedHistory?.cnic)
         .sort((a, b) => new Date(b.checkedIN) - new Date(a.checkedIN))
@@ -61,7 +67,7 @@ export default function GuestRecords() {
 
     }
 
-    const filterGuest = records.filter((record) => {
+    const filterGuest = uniqueRecords.filter((record) => {
         const matchedSearch =
             matchesSearch(record.name) ||
             matchesSearch(record.fatherName) ||
@@ -236,7 +242,7 @@ export default function GuestRecords() {
                                 </Flex>
 
                                 <HStack mt={5}>
-                                    <Text fontWeight={'bold'}>{selectedHistory.name}</Text>
+                                    <Text fontWeight={'bold'}>{selectedHistory?.name}</Text>
                                     <Badge colorPalette={'blue'}
                                         px={2} py={1} >
                                         {guestHistory.length}
@@ -244,8 +250,8 @@ export default function GuestRecords() {
                                 </HStack>
 
                                 <HStack color={'GrayText'} mt={3} pb={3}>
-                                    <Text>{selectedHistory.cnic}</Text>
-                                    <Text mx={5}>{selectedHistory.contact}</Text>
+                                    <Text>{selectedHistory?.cnic}</Text>
+                                    <Text mx={5}>{selectedHistory?.contact}</Text>
                                 </HStack>
 
                                 <hr></hr>
@@ -283,7 +289,7 @@ export default function GuestRecords() {
                                                     </HStack>
 
                                                     <Badge colorPalette="green" borderRadius="sm">
-                                                        {/* {vist.price} */}
+                                                        {visit.roomPrice}
                                                     </Badge>
                                                 </Flex>
 
