@@ -39,8 +39,11 @@ export default function GuestRecords() {
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
 
+
+    // For Unique entries, The main purpose is removed the duplicates
     const uniqueRecords = records
-        .sort((a, b) => new Date(b.checkedIN) - new Date(a.checkedIN))  // latest pehle
+        .sort((a, b) => new Date(b.checkedIN) - new Date(a.checkedIN))
+        // self represent full array 
         .filter((record, index, self) =>
             index === self.findIndex(r => r.cnic === record.cnic)  // unique CNIC
         )
@@ -305,8 +308,14 @@ export default function GuestRecords() {
                                                 </HStack>
 
                                                 <HStack justify="space-between" w="100%">
-                                                    <LuUsers /><Text>{visit.adults}</Text>
-                                                    <MdChildCare size={18} /><Text>{visit.children}</Text>
+                                                    <HStack>
+                                                        <LuUsers /><Text>{visit.adults}</Text>
+
+                                                    </HStack>
+
+                                                    <HStack>
+                                                        <MdChildCare size={18} /><Text>{visit.children}</Text>
+                                                    </HStack>
                                                 </HStack>
 
                                             </VStack>
