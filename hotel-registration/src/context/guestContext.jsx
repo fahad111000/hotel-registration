@@ -44,6 +44,8 @@ export default function GuestProvider({ children }) {
         return savedData ? JSON.parse(savedData) : []
     })
 
+
+    // Form Data new Entery
     const addGuest = (guest) => {
 
         const newGuest = {
@@ -51,6 +53,7 @@ export default function GuestProvider({ children }) {
             createdAt: Date.now(),
 
         }
+
 
         setGuest(prev => {
             const updatedData = [...prev, newGuest]
@@ -66,17 +69,24 @@ export default function GuestProvider({ children }) {
     }
 
     const updateGuest = (index, updatedGuest) => {
+        // guests update
         const updatedData = guests.map((guest, i) =>
             i === index ? updatedGuest : guest
         )
-        setGuest(updatedData);
+        setGuest(updatedData)
         localStorage.setItem('guests', JSON.stringify(updatedData))
 
-        setRecords(prev => prev.map((record, i) =>
-            i === index ? updatedGuest : record
-        ))
-
+        // records update
+        const updatedRecords = records.map((record) =>
+            record.cnic === updatedGuest.cnic &&
+                record.checkedIN === updatedGuest.checkedIN
+                ? updatedGuest
+                : record
+        )
+        setRecords(updatedRecords)
+        localStorage.setItem('records', JSON.stringify(updatedRecords))
     }
+
 
     // delete entry
     const deleteEntry = (index) => {

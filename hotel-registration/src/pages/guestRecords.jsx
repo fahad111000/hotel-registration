@@ -27,6 +27,7 @@ export default function GuestRecords() {
 
 
     const [selectedHistory, setSelectedHistory] = useState(null)
+    // THis state is use for Model open and close
     const [historyOpen, setHistoryOpen] = useState(false)
 
     // Records
@@ -41,6 +42,7 @@ export default function GuestRecords() {
 
 
     // For Unique entries, The main purpose is removed the duplicates
+    // Latest Reocords are save in Records list 
     const uniqueRecords = records
         .sort((a, b) => new Date(b.checkedIN) - new Date(a.checkedIN))
         // self represent full array 
@@ -48,6 +50,7 @@ export default function GuestRecords() {
             index === self.findIndex(r => r.cnic === record.cnic)  // unique CNIC
         )
 
+    // Guest History check on cnic base
     const guestHistory = records
         .filter(r => r.cnic === selectedHistory?.cnic)
         .sort((a, b) => new Date(b.checkedIN) - new Date(a.checkedIN))
@@ -56,7 +59,9 @@ export default function GuestRecords() {
     // Search matches adn text hilights
     const matchesSearch = (value) => (value || '').toLowerCase().includes(search.trim().toLowerCase())
     const highlightText = (text) => {
+        // run when value is undefind or null 
         if (!text) return ''
+        // run when search is empty
         if (!search.trim()) return text;
 
         const regex = RegExp(`(${search.trim()})`, 'gi');
@@ -261,6 +266,7 @@ export default function GuestRecords() {
 
                             </Flex>
 
+                            {/* Guest History UI */}
                             <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4}>
 
                                 {guestHistory.map((visit, index) => (

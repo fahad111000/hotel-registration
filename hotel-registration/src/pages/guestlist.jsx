@@ -151,7 +151,7 @@ export default function GuestList() {
                 <Table.Body py={'100px'}>
                     {filterdGuests.map((guest, index) => (
 
-                        <Table.Row  key={index}>
+                        <Table.Row key={index}>
 
                             <Table.Cell>{guest.roomNo}</Table.Cell>
                             <Table.Cell >{highlightText(guest.name)}</Table.Cell>
@@ -166,6 +166,8 @@ export default function GuestList() {
                             <Table.Cell>{guest.checkedOut}</Table.Cell>
                             <Table.Cell>
                                 <Flex gap={2}>
+
+                                    {/* Edit button  */}
                                     <Button
                                         variant="outline"
                                         color="blue.600"
@@ -178,6 +180,8 @@ export default function GuestList() {
                                     >
                                         <LuPencil size={16} />
                                     </Button>
+
+                                    {/* Delete button  */}
                                     <Button
                                         variant="outline"
                                         color="red.600"

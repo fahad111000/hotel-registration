@@ -5,8 +5,10 @@ import { Combobox, useListCollection, useFilter } from "@chakra-ui/react"
 import { districts } from "../data/district";
 
 export default function RegistrationForm({ onClose, isEdit, editIndex }) {
-    // Component mein:
+
+    // Hook 
     const { contains } = useFilter({ sensitivity: "base" })
+
     const { collection, filter } = useListCollection({
         initialItems: districts.map(d => ({ label: d, value: d })),
         filter: contains,
@@ -60,7 +62,6 @@ export default function RegistrationForm({ onClose, isEdit, editIndex }) {
             }
         }
     }
-    console.log("Form data : ", formData)
 
     const handelFormSubmit = () => {
         if (isEdit) {
